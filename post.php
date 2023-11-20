@@ -89,7 +89,7 @@ $rules = [
 ];
 
 $placeholders = [
-    "forwho" => "\"\"",
+    "forwho" => "\"pour\"",
     "lname" => "\"nom\"",
     "fname" => "\"prénom\"",
     "childname" => "\"nom de l'enfant\"",
