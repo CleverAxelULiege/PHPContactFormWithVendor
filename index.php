@@ -43,6 +43,7 @@ if ($lng == "en") {
             <div class='error_messages_container'>
                 <?php
                     Validator::displayErrorMessages();
+                    //possibilité de montrer les messages pour un seul champs spécifique ici "lname" -> Validator::displayErrorMessages("lname");
                     $old = Validator::getOldData();
                 ?>
             </div>
@@ -59,8 +60,8 @@ if ($lng == "en") {
                     </label>
                     <div>
                         <select name="forwho" id="forwho" onchange="hideunuse()">
-                            <option <?php if($old("forwho", "adult", true) == "adult") echo "selected" ?> value="adult"><?php echo $varlabels[1] ?></option>
-                            <option <?php if($old("forwho", null, true) == "child") echo "selected" ?> value="child"><?php echo $varlabels[2] ?></option>
+                            <option <?php if($old("forwho", defaultValue: "adult", rawValue: true) == "adult") echo "selected" ?> value="adult"><?php echo $varlabels[1] ?></option>
+                            <option <?php if($old("forwho", rawValue: true) == "child") echo "selected" ?> value="child"><?php echo $varlabels[2] ?></option>
                         </select>
                     </div>
                 </section>
@@ -137,7 +138,7 @@ if ($lng == "en") {
                         ?>
 
                         <div class="custom_select">
-                            <input type="hidden" name="prefix_phone_number" id="prefix_phone_number" value="<?php $old("prefix_phone_number", "0032")?>"/>
+                            <input type="hidden" name="prefix_phone_number" id="prefix_phone_number" value="<?php $old("prefix_phone_number", defaultValue: "0032")?>"/>
                             <button class="button_custom_select"></button>
                             <ul class="options_custom_select" style="display: none;" tabindex="-1">
                                 <li data-value="0032" title="Belgium">

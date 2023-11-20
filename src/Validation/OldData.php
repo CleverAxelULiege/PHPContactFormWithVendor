@@ -10,12 +10,12 @@ class OldData{
         $this->oldData =$oldData;
     }
 
-    public function __invoke(string $key, string $default = null, $rawValue = false)
+    public function __invoke(string $key, string $defaultValue = null, $rawValue = false)
     {
         $data = $this->oldData[$key] ?? "";
 
-        if($default != null && $data == ""){
-            $data = $default;
+        if($defaultValue != null && $data == ""){
+            $data = $defaultValue;
         }
         
         if($rawValue){
