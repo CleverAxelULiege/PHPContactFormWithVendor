@@ -1,4 +1,7 @@
 <?php
+require(__DIR__ . "/vendor/autoload.php");
+use App\Validation\Validator;
+
 if (isset($_GET['group'])) $group = $_GET['group'];
 else $group = 0;
 if (isset($_GET['groupname'])) $groupname = $_GET['groupname'];
@@ -37,6 +40,13 @@ if ($lng == "en") {
         </div>
 
         <form action="./post.php" method="post" id="contact_form">
+            <div class='error_messages_container'>
+                <?php
+                    Validator::displayErrorMessages();
+                    $old = Validator::getOldData();
+                ?>
+            </div>
+
             <div class="description">
                 <em>Attention, les champs précédés d'une étoile <i>(*)</i> sont obligatoires.</em>
             </div>
@@ -49,8 +59,8 @@ if ($lng == "en") {
                     </label>
                     <div>
                         <select name="forwho" id="forwho" onchange="hideunuse()">
-                            <option selected="selected" value="adult"><?php echo $varlabels[1] ?></option>
-                            <option value="child"><?php echo $varlabels[2] ?></option>
+                            <option <?php if($old("forwho", "adult", true) == "adult") echo "selected" ?> value="adult"><?php echo $varlabels[1] ?></option>
+                            <option <?php if($old("forwho", null, true) == "child") echo "selected" ?> value="child"><?php echo $varlabels[2] ?></option>
                         </select>
                     </div>
                 </section>
@@ -65,7 +75,7 @@ if ($lng == "en") {
                             <i>(*)</i><?php echo $varlabels[3] ?>
                         </label>
                         <div>
-                            <input type="text" name="lname" id="lname" />
+                            <input type="text" name="lname" id="lname" value="<?php $old("lname") ?>" />
                         </div>
                     </div>
 
@@ -75,7 +85,7 @@ if ($lng == "en") {
                                 <i>(*)</i><?php echo $varlabels[4] ?>
                             </label>
                             <div>
-                                <input type="text" name="childname" id="childname">
+                                <input type="text" name="childname" id="childname" value="<?php $old("childname") ?>"/>
                             </div>
                         </div>
                     <?php endif ?>
@@ -85,7 +95,7 @@ if ($lng == "en") {
                             <i>(*)</i><?php echo $varlabels[5] ?>
                         </label>
                         <div>
-                            <input type="text" name="fname" id="fname">
+                            <input type="text" name="fname" id="fname" value="<?php $old("fname") ?>"/>
                         </div>
                     </div>
 
@@ -95,7 +105,7 @@ if ($lng == "en") {
                                 <i>(*)</i><?php echo $varlabels[6] ?>
                             </label>
                             <div>
-                                <input type="text" name="childfname" id="childfname">
+                                <input type="text" name="childfname" id="childfname" value="<?php $old("childfname") ?>"/>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -106,7 +116,7 @@ if ($lng == "en") {
                             <i>(*)</i><?php echo $varlabels[7] ?>
                         </label>
                         <div>
-                            <input type="text" name="cntname" id="cntname">
+                            <input type="text" name="cntname" id="cntname" value="<?php $old("cntname") ?>"/>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -117,7 +127,7 @@ if ($lng == "en") {
 
 
             <section class="phone_email_container">
-                <input type="hidden" name="phone_number" id="phone_number">
+                <input type="hidden" name="phone_number" id="phone_number" value="<?php $old("phone_number") ?>"/>
                 <div>
                     <label for="tel">
                         <i>(*)</i><?php echo $varlabels[8] ?>
@@ -127,7 +137,7 @@ if ($lng == "en") {
                         ?>
 
                         <div class="custom_select">
-                            <input type="hidden" value="0032" id="prefix_phone_number">
+                            <input type="hidden" name="prefix_phone_number" id="prefix_phone_number" value="<?php $old("prefix_phone_number", "0032")?>"/>
                             <button class="button_custom_select"></button>
                             <ul class="options_custom_select" style="display: none;" tabindex="-1">
                                 <li data-value="0032" title="Belgium">
@@ -175,7 +185,7 @@ if ($lng == "en") {
                             </ul>
                         </div>
 
-                        <input type="text" name="tel" id="tel">
+                        <input type="text" name="tel" id="tel" value="<?php $old("tel")?>"/>
                     </div>
                 </div>
 
@@ -184,7 +194,7 @@ if ($lng == "en") {
                         <i>(*)</i><?php echo $varlabels[9] ?>
                     </label>
                     <div>
-                        <input type="text" name="email" id="email">
+                        <input type="text" name="email" id="email" value="<?php $old("email")?>">
                     </div>
                 </div>
             </section>
@@ -202,7 +212,7 @@ if ($lng == "en") {
                             </label>
                         </div>
                         <div>
-                            <input type="text" name="addr" id="addr">
+                            <input type="text" name="addr" id="addr" value="<?php $old("addr")?>">
                         </div>
                     </div>
                     <div class="city_postal_code_container">
@@ -211,7 +221,7 @@ if ($lng == "en") {
                                 <i>(*)</i><?php echo $varlabels[11] ?>
                             </label>
                             <div>
-                                <input type="text" name="cpost" id="cpost">
+                                <input type="text" name="cpost" id="cpost" value="<?php $old("cpost")?>">
                             </div>
                         </div>
                         <div>
@@ -219,7 +229,7 @@ if ($lng == "en") {
                                 <i>(*)</i><?php echo $varlabels[12] ?>
                             </label>
                             <div>
-                                <input type="text" name="loc" id="loc">
+                                <input type="text" name="loc" id="loc" value="<?php $old("loc")?>">
                             </div>
                         </div>
                     </div>
@@ -238,10 +248,10 @@ if ($lng == "en") {
                         </label>
                     </div>
                     <div class="input">
-                        <input type="hidden" id="birthdate" name="birthdate">
-                        <input type="number" placeholder=<?php echo $varlabels[22] ?> id="ybirthdate" name="ybirthdate" min="1920" max=<?php echo date("Y") ?>>
-                        <input type="number" placeholder="MM" id="mbirthdate" name="mbirthdate" min="1" max="12">
-                        <input type="number" placeholder=<?php echo $varlabels[23] ?> id="dbirthdate" name="dbirthdate" min="1" max="31">
+                        <input type="hidden" value="<?php $old("birthdate")?>" id="birthdate" name="birthdate">
+                        <input type="number" value="<?php $old("ybirthdate")?>" placeholder=<?php echo $varlabels[22] ?> id="ybirthdate" name="ybirthdate" min="1920" max=<?php echo date("Y") ?>>
+                        <input type="number" value="<?php $old("mbirthdate")?>" placeholder="MM" id="mbirthdate" name="mbirthdate" min="1" max="12">
+                        <input type="number" value="<?php $old("dbirthdate")?>" placeholder=<?php echo $varlabels[23] ?> id="dbirthdate" name="dbirthdate" min="1" max="31">
                     </div>
                 </div>
             </section>
@@ -258,7 +268,7 @@ if ($lng == "en") {
                             </label>
                         </div>
                         <div>
-                            <input type="text" name="mut" id="mut">
+                            <input type="text" name="mut" id="mut" value="<?php $old("mut")?>">
                         </div>
                     </div>
                     <div>
@@ -271,7 +281,7 @@ if ($lng == "en") {
                             </label>
                         </div>
                         <div>
-                            <input type="text" name="natnumber" id="natnumber">
+                            <input type="text" name="natnumber" id="natnumber" value="<?php $old("natnumber")?>">
                         </div>
                     </div>
                 </div>
@@ -288,7 +298,7 @@ if ($lng == "en") {
                             </label>
                         </div>
                         <div>
-                            <input type="text" name="reason" id="reason">
+                            <input type="text" name="reason" id="reason" value="<?php $old("reason")?>">
                         </div>
                     </div>
 
@@ -299,7 +309,7 @@ if ($lng == "en") {
                             </label>
                         </div>
                         <div>
-                            <input type="text" name="orig" id="orig">
+                            <input type="text" name="orig" id="orig" value="<?php $old("orig")?>">
                         </div>
                     </div>
 
@@ -310,7 +320,7 @@ if ($lng == "en") {
                             </label>
                         </div>
                         <div>
-                            <input type="text" name="origchild" id="origchild">
+                            <input type="text" name="origchild" id="origchild" value="<?php $old("origchild")?>">
                         </div>
                     </div>
 
@@ -322,7 +332,7 @@ if ($lng == "en") {
                                 </label>
                             </div>
                             <div>
-                                <input type="text" name="syear" id="syear">
+                                <input type="text" name="syear" id="syear" value="<?php $old("syear")?>">
                             </div>
                         </div>
                         <div id="n9">
@@ -332,7 +342,7 @@ if ($lng == "en") {
                                 </label>
                             </div>
                             <div>
-                                <input type="text" id="schtype" name="schtype">
+                                <input type="text" id="schtype" name="schtype" value="<?php $old("schtype")?>">
                             </div>
                         </div>
                     </div>
@@ -347,13 +357,13 @@ if ($lng == "en") {
                         <?php echo $varlabels[19] ?>
                     </label>
                     <div>
-                        <textarea name="message"></textarea>
+                        <textarea name="message"><?php $old("message")?></textarea>
                     </div>
                 </div>
             </section>
 
             <div class="submit_container">
-                <input type="submit" value=<?php echo $varlabels[20]?>>
+                <input type="submit" value=<?php echo $varlabels[20] ?>>
             </div>
         </form>
     </main>
@@ -400,9 +410,9 @@ if ($lng == "en") {
         monthBirthDate = isNaN(monthBirthDate) ? 0 : monthBirthDate;
         dayBirthDate = isNaN(dayBirthDate) ? 0 : dayBirthDate;
 
-        if(yearBirthDate.trim() == "" && monthBirthDate == 0 && dayBirthDate == 0){
+        if (yearBirthDate.trim() == "" && monthBirthDate == 0 && dayBirthDate == 0) {
             BIRTHDATE.value = "";
-        }else{
+        } else {
             BIRTHDATE.value = yearBirthDate + "/" + (monthBirthDate < 10 ? "0" + monthBirthDate.toString() : monthBirthDate.toString()) + "/" + (dayBirthDate < 10 ? "0" + dayBirthDate.toString() : dayBirthDate.toString());
         }
         PHONE_NUMBER.value = SUFFIX_PHONE_NUMBER.value.trim() == "" ? "" : PREFIX_PHONE_NUMBER.value + PHONE_NUMBER.value.trim();

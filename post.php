@@ -111,19 +111,16 @@ $placeholders = [
     "message" => "\"message\""
 ];
 
-$valdidator = new Validator($rules, $_POST, $placeholders);
+$validator = new Validator($rules, $_POST, $placeholders);
+$validator
+//je peux lui dire de directement retourner à cette URL si la validation rate avec les "vieilles" données ainsi que les messages d'erreurs stockées dans des cookies.
+->redirectTo("/index.php")
+->validate(); 
 
-// Permet d'afficher les données valides ou les messages d'erreurs dans un VAR_DUMP
-// Validator::rawDisplay($valdidator);
-
-if($valdidator->validate()){
-    //La validation est passée
-    //substitut du $_POST, les données devant être exclues n'y seront pas.
-    $validatedData = $valdidator->getValidatedData();
-} else {
-    //Une ou plusieurs règles n'ont pas été respectées.
-    //Il faudra afficher les messages d'erreurs manuellement si on le souhaite.
-    $errorMessages = $valdidator->getErrorValidationMessages();
-}
+$validator
+->redirectTo("/index.php")
+//si j'ai des données "sensibles", je peux lui spécifier les vieilles données à ne pas renvoyer dans les cookies grâce à cette méthode
+->setKeysToRemoveFromDataWhenRedirecting(["natnumber", "mut"]) 
+->validate();
 
 

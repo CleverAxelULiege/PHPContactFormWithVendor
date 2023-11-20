@@ -225,3 +225,11 @@ form .label_input_flex label {
 .options_custom_select>li.active {
     background-color: #e9e9ed;
 }
+
+form .error_messages_container ul{
+    padding-left: 20px;
+    color: rgb(153, 49, 49);
+}
+form .error_messages_container ul li{
+    padding: 10px 0;
+}
