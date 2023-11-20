@@ -59,8 +59,9 @@ class Validator
             $this->testForNullableRuleAndRequiredRuleInSameList($validationRules);
             $this->executeValidationRules($validationRules, $key);
         }
-
-        $this->tryToRedirectOnFail();
+        
+        if($this->didValidationFailed)
+            $this->tryToRedirectOnFail();
 
         return !$this->didValidationFailed;
     }
